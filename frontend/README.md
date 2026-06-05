@@ -7,7 +7,7 @@ A premium, high-performance, and secure NFT-based Ethereum Staking DApp. Users d
 ## 🚀 Deployed Addresses & Links
 
 * **Sepolia Testnet Smart Contract:** [`0x8C869B926afd26a3CB8F144794cCFcdb13B3aF0F`](https://sepolia.etherscan.io/address/0x8C869B926afd26a3CB8F144794cCFcdb13B3aF0F)
-* **Deployed Frontend URL:** `[Insert deployed Vercel/Netlify URL here]` (e.g., `https://etherstaker-nft.vercel.app`)
+* **Deployed Frontend URL:** `[https://staking-nine.vercel.app]` 
 
 ---
 
