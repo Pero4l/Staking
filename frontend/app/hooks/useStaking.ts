@@ -223,6 +223,29 @@ export function useStaking() {
                 const decodedJson = atob(base64Json);
                 const parsed = JSON.parse(decodedJson);
                 image = parsed.image; // This contains the data:image/svg+xml;base64,... URI
+                
+                if (image.startsWith("data:image/svg+xml;base64,")) {
+                  const base64Svg = image.substring("data:image/svg+xml;base64,".length);
+                  let svgText = atob(base64Svg);
+                  
+                  // Format the timestamp
+                  const formattedDate = new Date(Number(s.startTime) * 1000).toLocaleString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true
+                  });
+                  
+                  // Replace raw timestamp in SVG
+                  const targetStr = `>${s.startTime.toString()}</text>`;
+                  const replacementStr = `>${formattedDate}</text>`;
+                  svgText = svgText.replace(targetStr, replacementStr);
+                  
+                  // Re-encode back to base64
+                  image = "data:image/svg+xml;base64," + btoa(svgText);
+                }
               }
             } catch (e) {
               console.error("Error decoding tokenURI", e);

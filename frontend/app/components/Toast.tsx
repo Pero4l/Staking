@@ -20,7 +20,7 @@ export function Toast({ state, error, hash, onClose }: ToastProps) {
         return {
           title: "Waiting for Signature",
           desc: "Please confirm the transaction in your connected wallet.",
-          color: "border-amber-500/30 bg-amber-950/20 text-amber-200",
+          color: "border-amber-500/30 bg-black text-amber-200",
           icon: <Wallet className="h-6 w-6 text-amber-400 animate-pulse" />,
           spinner: false,
         };
@@ -28,7 +28,7 @@ export function Toast({ state, error, hash, onClose }: ToastProps) {
         return {
           title: "Transaction Pending",
           desc: "Processing on the blockchain network. This may take a moment...",
-          color: "border-blue-500/30 bg-blue-950/20 text-blue-200",
+          color: "border-blue-500/30 bg-blue-700 text-blue-100",
           icon: <Loader2 className="h-6 w-6 text-blue-400 animate-spin" />,
           spinner: true,
         };
@@ -36,7 +36,7 @@ export function Toast({ state, error, hash, onClose }: ToastProps) {
         return {
           title: "Transaction Confirmed",
           desc: "Your action has been validated successfully on-chain!",
-          color: "border-emerald-500/30 bg-emerald-950/20 text-emerald-200",
+          color: "border-emerald-500/30 bg-gray-800 text-emerald-200",
           icon: <CheckCircle2 className="h-6 w-6 text-emerald-400" />,
           spinner: false,
         };
@@ -44,8 +44,8 @@ export function Toast({ state, error, hash, onClose }: ToastProps) {
         return {
           title: "Transaction Failed",
           desc: error || "An unexpected error occurred during execution.",
-          color: "border-rose-500/30 bg-rose-950/20 text-rose-200",
-          icon: <AlertCircle className="h-6 w-6 text-rose-400" />,
+          color: "border-rose-500/30 bg-red-700 text-rose-100",
+          icon: <AlertCircle className="h-6 w-6 text-rose-200" />,
           spinner: false,
         };
       default:

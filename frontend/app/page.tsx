@@ -120,6 +120,13 @@ export default function Home() {
   const [copied, setCopied] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
+  // Hydration guard state
+  const [mounted, setMounted] = useState<boolean>(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Transfer states
   const [transferTarget, setTransferTarget] = useState<{ [tokenId: number]: string }>({});
   const [transferringToken, setTransferringToken] = useState<number | null>(null);
@@ -220,7 +227,7 @@ export default function Home() {
 
           <div className="flex items-center gap-3">
             {/* Network Badge */}
-            {account && (
+            {mounted && account && (
               <span className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-2xl text-[11px] font-mono tracking-wide ${
                 isCorrectNetwork
                   ? chainId === LOCAL_CHAIN_ID
@@ -249,7 +256,7 @@ export default function Home() {
             </button>
 
             {/* Wallet Connector */}
-            {account ? (
+            {mounted && account ? (
               <div className="flex items-center gap-2 bg-white border border-slate-250 pl-3.5 pr-2 py-1.5 rounded-2xl shadow-sm">
                 <div className="h-5 w-5 rounded-full bg-emerald-600 shrink-0" />
                 <span className="font-mono text-xs text-slate-700 font-bold">
@@ -288,7 +295,7 @@ export default function Home() {
       </header>
 
       {/* Wrong Network Banner */}
-      {account && !isCorrectNetwork && (
+      {mounted && account && !isCorrectNetwork && (
         <div className="bg-rose-50 border-b border-rose-200">
           <div className="max-w-7xl mx-auto px-4 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
             <div className="flex items-center gap-2 text-rose-800 text-xs sm:text-sm">
@@ -306,7 +313,7 @@ export default function Home() {
       )}
 
       {/* Paused Banner */}
-      {paused && (
+      {mounted && paused && (
         <div className="bg-amber-50 border-b border-amber-200">
           <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-center gap-2 text-amber-800 text-xs sm:text-sm text-center">
             <AlertTriangle className="h-4.5 w-4.5 text-amber-600 shrink-0" />
@@ -316,7 +323,7 @@ export default function Home() {
       )}
 
       {/* Emergency Mode Banner */}
-      {emergencyMode && (
+      {mounted && emergencyMode && (
         <div className="bg-rose-50 border-b border-rose-200">
           <div className="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-center gap-2 text-rose-800 text-xs sm:text-sm text-center">
             <Flame className="h-4.5 w-4.5 text-rose-600 shrink-0" />
@@ -433,7 +440,7 @@ export default function Home() {
                       value={stakeAmount}
                       onChange={(e) => setStakeAmount(e.target.value)}
                       placeholder="0.00"
-                      disabled={!account || !isCorrectNetwork || paused}
+                      disabled={!mounted || !account || !isCorrectNetwork || paused}
                       className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-600 focus:bg-white px-4 py-3.5 rounded-2xl text-xl font-bold text-slate-800 placeholder-slate-400 focus:outline-none transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                     />
                     <span className="absolute right-4 top-4 font-black text-sm text-slate-450">ETH</span>
@@ -446,7 +453,7 @@ export default function Home() {
                     <button
                       key={val}
                       type="button"
-                      disabled={!account || !isCorrectNetwork || paused}
+                      disabled={!mounted || !account || !isCorrectNetwork || paused}
                       onClick={() => setStakeAmount(val)}
                       className="py-2 text-xs font-bold rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600 hover:text-slate-800 transition-all disabled:opacity-40 cursor-pointer"
                     >
@@ -462,7 +469,7 @@ export default function Home() {
 
                 <button
                   type="submit"
-                  disabled={!account || !isCorrectNetwork || paused || !stakeAmount}
+                  disabled={!mounted || !account || !isCorrectNetwork || paused || !stakeAmount}
                   className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-100 text-white disabled:text-slate-400 font-extrabold py-4 rounded-2xl transition-all active:scale-98 text-xs tracking-widest uppercase shadow-sm flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed"
                 >
                   <Plus className="h-4 w-4" />
@@ -472,7 +479,7 @@ export default function Home() {
             </div>
 
             {/* Owner Management */}
-            {account && isOwner && (
+            {mounted && account && isOwner && (
               <div className="p-6 bg-white border border-slate-200 rounded-3xl shadow-sm">
                 <h2 className="text-sm font-black tracking-wider uppercase mb-4 flex items-center gap-2 text-slate-800">
                   <ShieldAlert className="h-4.5 w-4.5 text-slate-500" />
@@ -556,7 +563,7 @@ export default function Home() {
           <div className="lg:col-span-2 space-y-6">
             
             {/* User Portfolio metrics */}
-            {account && (
+            {mounted && account && (
               <div className="p-6 bg-white border border-slate-200 rounded-3xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-5 shadow-sm">
                 <div>
                   <h3 className="text-slate-500 text-[10px] font-extrabold uppercase tracking-wider">Your Staking Balance</h3>
@@ -581,7 +588,7 @@ export default function Home() {
                   Active Staking Tickets
                 </h2>
                 
-                {account && (
+                {mounted && account && (
                   <button 
                     onClick={handleManualRefresh}
                     disabled={refreshing}
@@ -593,7 +600,7 @@ export default function Home() {
                 )}
               </div>
 
-              {!account ? (
+              {!mounted || !account ? (
                 <div className="p-14 border border-dashed border-slate-200 rounded-3xl text-center bg-white shadow-sm">
                   <div className="h-12 w-12 rounded-2xl bg-slate-50 border border-slate-150 flex items-center justify-center mx-auto mb-4">
                     <Wallet className="h-5.5 w-5.5 text-slate-400" />
@@ -647,6 +654,20 @@ export default function Home() {
                             startTime={s.startTime} 
                             onUnlock={() => {}} 
                           />
+                        </div>
+
+                        <div className="text-[10px] text-slate-450 font-mono flex justify-between">
+                          <span>Staked At:</span>
+                          <span>
+                            {new Date(s.startTime * 1000).toLocaleString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: true
+                            })}
+                          </span>
                         </div>
 
                         {/* Principal & yield grid */}
@@ -752,7 +773,14 @@ export default function Home() {
                         {h.amount && <span className="ml-1 text-emerald-700">({h.amount})</span>}
                         {h.tokenId !== undefined && <span className="ml-1 text-blue-600 font-mono">(#{h.tokenId})</span>}
                         <span className="block text-[10px] text-slate-450 mt-1 font-mono">
-                          {new Date(h.timestamp * 1000).toLocaleString()}
+                          {new Date(h.timestamp * 1000).toLocaleString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true
+                          })}
                         </span>
                       </div>
                       
